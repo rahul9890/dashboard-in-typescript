@@ -4,7 +4,7 @@ import Navbar from "src/Navbar/Navbar";
 const Dashboard: React.FC = () => {
 
     return (<div>
-        <Navbar/>
+       
         Dashboard
     </div>)
 }
