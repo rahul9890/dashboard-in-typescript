@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loggedIn } from "src/redux/authSlice";
 
 interface LoggedInUser {
   email: string;
@@ -14,7 +16,7 @@ const Login: React.FC = () => {
   });
 
   const baseUserURL = "http://localhost:8080/users";
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async(e:React.FormEvent) => {
@@ -28,6 +30,7 @@ const Login: React.FC = () => {
         }
         })
       if (isUserAuthenticate.data) {
+        dispatch(loggedIn(loggedInUser.email));
         navigate("/dashboard");
       } else {
         alert("Invalid Credentials");
