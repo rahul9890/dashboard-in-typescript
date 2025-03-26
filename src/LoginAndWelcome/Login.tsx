@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface LoggedInUser {
   email: string;
@@ -12,23 +13,27 @@ const Login: React.FC = () => {
     password: "",
   });
 
+  const baseUserURL = "http://localhost:8080/users";
+
+  const navigate = useNavigate();
+
   const handleLogin = async(e:React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const isUserAuthenticate = await axios.post("http://localhost:8080/users/authentication", loggedInUser,
+      const isUserAuthenticate = await axios.post(baseUserURL+"/authentication", loggedInUser,
         {
           headers: {
           "Content-Type":"application/json"
         }
         })
       if (isUserAuthenticate.data) {
-        alert("User Logged In")
+        navigate("/dashboard");
       } else {
-        alert("Invalid Credentials")
+        alert("Invalid Credentials");
       }
     } catch (error) {
-      alert("Some error occurred")
+      alert("Some error occurred");
     }
 }
 
