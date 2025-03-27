@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   userId: number;
@@ -11,6 +12,7 @@ interface User {
 const ManageUsers: React.FC = () => {
   const [userList, setUserList] = useState<User[]>();
   const baseUserURL = "http://localhost:8080/users";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,6 +27,9 @@ const ManageUsers: React.FC = () => {
     };
     fetchData();
   }, []);
+
+
+  const navigate = useNavigate();
 
   return (
     <div className="m-4">
@@ -44,7 +49,7 @@ const ManageUsers: React.FC = () => {
               <td>{item.userEmail}</td>
               <td>
                 <span>
-                  <button className="btn btn-primary m-1">Edit</button>
+                  <button className="btn btn-primary m-1" onClick={()=>navigate("/edituser",{state:{user:item}})}>Edit</button>
                 </span>
                 <span>
                   <button className="btn btn-primary">Delete</button>

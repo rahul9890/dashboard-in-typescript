@@ -8,6 +8,7 @@ import ManageUsers from './Dashboard/ManageUsers';
 import ManageDocument from './Dashboard/ManageDocument';
 import Groupchat from './Dashboard/Groupchat';
 import Navbar from './Navbar/Navbar';
+import EditUser from './Dashboard/EditUser';
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />}/>
             <Route path="/groupchat" element={<Groupchat />}/>
             <Route path="/manageusers" element={<ManageUsers />}/>
-            <Route path="/ManageDocuments" element={<ManageDocument />}/>
+            <Route path="/ManageDocuments" element={<ManageDocument />} />
+            <Route path='/edituser' element={ <EditUser/>} />
           </Route>
         </Routes>
       </BrowserRouter>
