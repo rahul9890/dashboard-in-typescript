@@ -54,6 +54,7 @@ const ManageUsers: React.FC = () => {
   };
 
   // 🔹 Filter users based on search term
+  //here at start as search term is empty so all userList is returned as filterdUserList 
   const filteredUsers = userList.filter((user) =>
     user.userName.toLowerCase().includes(searchTerm.toLowerCase())
   );
