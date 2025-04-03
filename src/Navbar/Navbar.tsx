@@ -5,7 +5,8 @@ const Navbar: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+  const handleLogout = () => {
+      sessionStorage.removeItem("loggedInUserEmail");
         navigate("/")
     }
 

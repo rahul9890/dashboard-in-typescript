@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface User {
@@ -14,7 +15,12 @@ const ManageUsers: React.FC = () => {
   const baseUserURL = "http://localhost:8080/users";
  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  
+
+  let loggedIn = useSelector((state: any) => state.auth.loggedInUserEmail);
+  if (!loggedIn) {
+    loggedIn = sessionStorage.getItem("loggedInUserEmail");
+  }
+
   
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +37,9 @@ const ManageUsers: React.FC = () => {
     fetchData();
   }, []);
 
-
+  const handleDelete = () => {
+  
+}
  
   return (
     <>
@@ -65,7 +73,7 @@ const ManageUsers: React.FC = () => {
                     <span>
                       <button
                         className="btn btn-primary"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => setShowModal(true)} disabled= {item.userEmail===loggedIn?true:false}
                       >
                         Delete
                       </button>
@@ -93,7 +101,7 @@ const ManageUsers: React.FC = () => {
                   <p>Are you sure you want to delete</p>
                 </div>
                 <div className="modal-footer d-flex justify-content-between">
-                  <button type="button" className="btn btn-danger">
+                  <button type="button" className="btn btn-danger" onClick={handleDelete}>
                     Confirm
                   </button>
                   <button
