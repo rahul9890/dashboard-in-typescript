@@ -11,7 +11,8 @@ interface User {
 }
 
 const ManageUsers: React.FC = () => {
-  const [userList, setUserList] = useState<User[]>();
+  const [userList, setUserList] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // 🔹 Add search state
   const baseUserURL = "http://localhost:8080/users";
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -27,15 +28,14 @@ const ManageUsers: React.FC = () => {
       try {
         const responseData = await axios.get(baseUserURL);
         if (responseData.status === 200) {
-          let data = responseData.data;
-          setUserList(data);
+          setUserList(responseData.data);
         }
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [showModal]); //here as delete operation if done then we need updated list from db and that should be in table
+  }, [showModal]); // 🔹 Refresh the list after deletion
 
   const handleDelete = () => {
     const deleteUser = async () => {
@@ -53,10 +53,25 @@ const ManageUsers: React.FC = () => {
     deleteUser();
   };
 
+  // 🔹 Filter users based on search term
+  const filteredUsers = userList.filter((user) =>
+    user.userName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       <div className="m-4">
         <h2>Users</h2>
+
+        {/* 🔹 Search Input */}
+        <input
+          type="text"
+          className="form-control mb-3"
+          placeholder="Search by Name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
         <table className="table table-info table-bordered">
           <thead>
             <tr>
@@ -66,8 +81,8 @@ const ManageUsers: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {userList &&
-              userList.map((item) => (
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((item) => (
                 <tr key={item.userId}>
                   <td>{item.userName}</td>
                   <td>{item.userEmail}</td>
@@ -89,54 +104,61 @@ const ManageUsers: React.FC = () => {
                           setUserEmailForDelete(item.userEmail);
                           setShowModal(true);
                         }}
-                        disabled={item.userEmail === loggedIn ? true : false}
+                        disabled={item.userEmail === loggedIn}
                       >
                         Delete
                       </button>
                     </span>
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3} className="text-center text-danger">
+                  No users found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
-      <div>
-        {showModal && (
-          <div className="modal fade show d-block">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Confirm Delete</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={() => setShowModal(false)}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <p>Are you sure you want to delete</p>
-                </div>
-                <div className="modal-footer d-flex justify-content-between">
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={handleDelete}
-                  >
-                    Confirm
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => setShowModal(false)}
-                  >
-                    Close
-                  </button>
-                </div>
+
+      {/* 🔹 Delete Confirmation Modal */}
+      {showModal && (
+        <div className="modal fade show d-block">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Confirm Delete</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setShowModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <p>Are you sure you want to delete this user?</p>
+              </div>
+              <div className="modal-footer d-flex justify-content-between">
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={handleDelete}
+                >
+                  Confirm
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowModal(false)}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };
