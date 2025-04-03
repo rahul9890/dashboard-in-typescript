@@ -13,15 +13,15 @@ interface User {
 const ManageUsers: React.FC = () => {
   const [userList, setUserList] = useState<User[]>();
   const baseUserURL = "http://localhost:8080/users";
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [userEmailForDelete, setUserEmailForDelete] = useState<string>();
 
   let loggedIn = useSelector((state: any) => state.auth.loggedInUserEmail);
   if (!loggedIn) {
     loggedIn = sessionStorage.getItem("loggedInUserEmail");
   }
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,12 +35,24 @@ const ManageUsers: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [showModal]); //here as delete operation if done then we need updated list from db and that should be in table
 
   const handleDelete = () => {
-  
-}
- 
+    const deleteUser = async () => {
+      try {
+        const responseData = await axios.delete(baseUserURL, {
+          data: { userEmail: userEmailForDelete },
+        });
+        if (responseData.status === 200) {
+          setShowModal(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    deleteUser();
+  };
+
   return (
     <>
       <div className="m-4">
@@ -73,7 +85,11 @@ const ManageUsers: React.FC = () => {
                     <span>
                       <button
                         className="btn btn-primary"
-                        onClick={() => setShowModal(true)} disabled= {item.userEmail===loggedIn?true:false}
+                        onClick={() => {
+                          setUserEmailForDelete(item.userEmail);
+                          setShowModal(true);
+                        }}
+                        disabled={item.userEmail === loggedIn ? true : false}
                       >
                         Delete
                       </button>
@@ -101,7 +117,11 @@ const ManageUsers: React.FC = () => {
                   <p>Are you sure you want to delete</p>
                 </div>
                 <div className="modal-footer d-flex justify-content-between">
-                  <button type="button" className="btn btn-danger" onClick={handleDelete}>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={handleDelete}
+                  >
                     Confirm
                   </button>
                   <button
