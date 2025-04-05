@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface User {
   userId: number;
   userName: string;
@@ -17,7 +18,7 @@ const ManageUsers: React.FC = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [userEmailForDelete, setUserEmailForDelete] = useState<string>();
-
+  const [showToast, setShowToast] = useState<boolean>(false);
   let loggedIn = useSelector((state: any) => state.auth.loggedInUserEmail);
   if (!loggedIn) {
     loggedIn = sessionStorage.getItem("loggedInUserEmail");
@@ -44,6 +45,7 @@ const ManageUsers: React.FC = () => {
           data: { userEmail: userEmailForDelete },
         });
         if (responseData.status === 200) {
+          setShowToast(true);
           setShowModal(false);
         }
       } catch (error) {
@@ -53,8 +55,15 @@ const ManageUsers: React.FC = () => {
     deleteUser();
   };
 
+  useEffect(() => {
+    if (showToast) {
+      toast.success("User deleted successfully!");
+      setShowToast(false); // Reset so it doesn't trigger repeatedly
+    }
+  }, [showToast]);
+
   // 🔹 Filter users based on search term
-  //here at start as search term is empty so all userList is returned as filterdUserList 
+  //here at start as search term is empty so all userList is returned as filterdUserList
   const filteredUsers = userList.filter((user) =>
     user.userName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -160,6 +169,8 @@ const ManageUsers: React.FC = () => {
           </div>
         </div>
       )}
+
+      <ToastContainer />
     </>
   );
 };
