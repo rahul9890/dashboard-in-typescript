@@ -26,6 +26,13 @@ const ManageDocument: React.FC = () => {
     fetchData();
   }, []);
 
+const handlePreview = (doc) => {
+  //this code is future plan ,its not working now
+};
+
+
+
+
   return (
     <div>
       <h2>My Uploads</h2>
@@ -45,9 +52,18 @@ const ManageDocument: React.FC = () => {
                 <td>{item.fileName}</td>
                 <td>{item.fileType}</td>
                 <td>
-                  <button>Edit</button>
-                  <button>Download</button>
-                  <button>Delete</button>
+                  <button type="button" className="btn btn-primary m-1" onClick={()=>handlePreview(item)}>
+                    Preview
+                  </button>
+                  <button type="button" className="btn btn-warning m-1">
+                    Edit
+                  </button>
+                  <button type="button" className="btn btn-info m-1">
+                    Download
+                  </button>
+                  <button type="button" className="btn btn-danger m-1">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
