@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
       sessionStorage.removeItem("loggedInUserEmail");
-        navigate("/")
+        navigate("/",{state:{toastMessage:"Logged out"}})
     }
 
 
