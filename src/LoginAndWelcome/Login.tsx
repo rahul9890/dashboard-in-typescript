@@ -37,7 +37,7 @@ const Login: React.FC = () => {
       );
       if (isUserAuthenticate.data) {
         dispatch(loggedIn(loggedInUser.email));
-        navigate("/dashboard");
+        navigate("/dashboard",{state:{toastMessage: "Logged In successfully"}});
       } else {
         setShowModal(true);
       }
