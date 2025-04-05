@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
 interface User {
   userId: number;
   userName: string;
@@ -12,6 +13,7 @@ interface User {
 }
 
 const ManageUsers: React.FC = () => {
+
   const [userList, setUserList] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>(""); // 🔹 Add search state
   const baseUserURL = "http://localhost:8080/users";
@@ -19,10 +21,19 @@ const ManageUsers: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [userEmailForDelete, setUserEmailForDelete] = useState<string>();
   const [showToast, setShowToast] = useState<boolean>(false);
+  const location = useLocation();
+
   let loggedIn = useSelector((state: any) => state.auth.loggedInUserEmail);
   if (!loggedIn) {
     loggedIn = sessionStorage.getItem("loggedInUserEmail");
   }
+useEffect(() => {
+  if (location.state?.toastMessage) {
+    toast.success(location.state.toastMessage);
+    // Clear history state so it doesn't repeat on reload
+    window.history.replaceState({}, document.title);
+  }
+}, [location]);
 
   useEffect(() => {
     const fetchData = async () => {

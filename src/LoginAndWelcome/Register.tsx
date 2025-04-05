@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface RegisterUser {
   user_name: string;
@@ -17,6 +19,9 @@ export default function Register() {
   });
   const baseUserURL = "http://localhost:8080/users";
   const [disableRegister, setDisableRegister] = useState<boolean>();
+  const [showToast, setShowToast] = useState<boolean>(false);
+  
+
   useEffect(() => {
     setDisableRegister(
       !RegisterUser.user_password ||
@@ -25,6 +30,13 @@ export default function Register() {
     );
   }, [RegisterUser.user_password, RegisterUser.confirm_password]);
 
+ useEffect(() => {
+   if (showToast) {
+     toast.success("User  Registered successfully!");
+     setShowToast(false); // Reset so it doesn't trigger repeatedly
+   }
+ }, [showToast]);
+  
   const handleRegisterSubmit = async(e:React.FormEvent) => {
     e.preventDefault();
 
@@ -35,7 +47,8 @@ export default function Register() {
         }
       });
       if (responseData.status===200) {
-        alert("register success");
+        setShowToast(true);
+        
       }
     } catch (error) {
       console.log("error to register User");
@@ -43,80 +56,83 @@ export default function Register() {
   }
 
   return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="card shadow-lg p-4" style={{ width: "22rem" }}>
-        <div className="card-body">
-          <h2 className="fw bold text-center mb-4">Register</h2>
-          <form onSubmit={handleRegisterSubmit}>
-            <div className="mb-3 ">
-              <label>FullName</label>
-              <input
-                type="text"
-                className="form-control"
-                value={RegisterUser.user_name}
-                onChange={(e) =>
-                  setRegisterUser({
-                    ...RegisterUser,
-                    user_name: e.target.value,
-                  })
-                }
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label>Email</label>
-              <input
-                type="email"
-                className="form-control"
-                value={RegisterUser.user_email}
-                onChange={(e) =>
-                  setRegisterUser({
-                    ...RegisterUser,
-                    user_email: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-3">
-              <label>Password</label>
-              <input
-                type="password"
-                className="form-control"
-                value={RegisterUser.user_password}
-                onChange={(e) =>
-                  setRegisterUser({
-                    ...RegisterUser,
-                    user_password: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="mb-3">
-              <label>ConfirmPassword</label>
-              <input
-                type="password"
-                className="form-control"
-                value={RegisterUser.confirm_password}
-                onChange={(e) =>
-                  setRegisterUser({
-                    ...RegisterUser,
-                    confirm_password: e.target.value,
-                  })
-                }
-              />
-            </div>
-            <div className="d-flex justify-content-center">
-              <button
-                type="submit"
-                className="btn btn-primary "
-                disabled={disableRegister}
-              >
-                Register
-              </button>
-            </div>
-          </form>
+    <>
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="card shadow-lg p-4" style={{ width: "22rem" }}>
+          <div className="card-body">
+            <h2 className="fw bold text-center mb-4">Register</h2>
+            <form onSubmit={handleRegisterSubmit}>
+              <div className="mb-3 ">
+                <label>FullName</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={RegisterUser.user_name}
+                  onChange={(e) =>
+                    setRegisterUser({
+                      ...RegisterUser,
+                      user_name: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label>Email</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  value={RegisterUser.user_email}
+                  onChange={(e) =>
+                    setRegisterUser({
+                      ...RegisterUser,
+                      user_email: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-3">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={RegisterUser.user_password}
+                  onChange={(e) =>
+                    setRegisterUser({
+                      ...RegisterUser,
+                      user_password: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="mb-3">
+                <label>ConfirmPassword</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  value={RegisterUser.confirm_password}
+                  onChange={(e) =>
+                    setRegisterUser({
+                      ...RegisterUser,
+                      confirm_password: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="d-flex justify-content-center">
+                <button
+                  type="submit"
+                  className="btn btn-primary "
+                  disabled={disableRegister}
+                >
+                  Register
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+      <ToastContainer/>
+    </>
   );
 }
