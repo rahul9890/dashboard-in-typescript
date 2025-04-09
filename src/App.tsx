@@ -9,6 +9,7 @@ import ManageDocument from './Dashboard/ManageDocument';
 import Groupchat from './Dashboard/Groupchat';
 import Navbar from './Navbar/Navbar';
 import EditUser from './Dashboard/EditUser';
+import CreateGoals from './UserOperations/CreateGoals';
 
 function App() {
   return (
@@ -19,11 +20,12 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/" element={<Navbar />}>
-            <Route path="/dashboard" element={<Dashboard />}/>
-            <Route path="/groupchat" element={<Groupchat />}/>
-            <Route path="/manageusers" element={<ManageUsers />}/>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/groupchat" element={<Groupchat />} />
+            <Route path="/manageusers" element={<ManageUsers />} />
             <Route path="/ManageDocuments" element={<ManageDocument />} />
-            <Route path='/edituser' element={ <EditUser/>} />
+            <Route path="/edituser" element={<EditUser />} />
+            <Route path="/creategoals" element={<CreateGoals/>} />
           </Route>
         </Routes>
       </BrowserRouter>

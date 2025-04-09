@@ -59,10 +59,18 @@ const Navbar: React.FC = () => {
                     ManageDocument
                   </Link>
                 </li>
-
-                <li className="nav-item flex-grow-1 border border-dark border-2 bg-primary">
-                  <button
+                <li className="nv-item flex-grow-1 border border-dark border-2 bg-primary">
+                  <Link
                     className="btn btn-primary mx-1"
+                    aria-current="page"
+                    to={"/creategoals"}
+                  >
+                    CreateGoals
+                  </Link>
+                </li>
+                <li className="nav-item flex-grow-1 border border-dark border-2 bg-danger">
+                  <button
+                    className="btn btn-danger mx-1"
                     aria-current="page"
                     onClick={() => handleLogout()}
                   >
@@ -72,8 +80,8 @@ const Navbar: React.FC = () => {
               </ul>
             </div>
           </div>
-            </nav>
-            <Outlet/>
+        </nav>
+        <Outlet />
       </>
     );
 };
