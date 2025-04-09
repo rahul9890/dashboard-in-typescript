@@ -9,7 +9,8 @@ import ManageDocument from './Dashboard/ManageDocument';
 import Groupchat from './Dashboard/Groupchat';
 import Navbar from './Navbar/Navbar';
 import EditUser from './Dashboard/EditUser';
-import CreateGoals from './UserOperations/CreateGoals';
+import CreateUserGoals from './UserOperations/CreateUserGoals';
+
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
             <Route path="/manageusers" element={<ManageUsers />} />
             <Route path="/ManageDocuments" element={<ManageDocument />} />
             <Route path="/edituser" element={<EditUser />} />
-            <Route path="/creategoals" element={<CreateGoals/>} />
+            <Route path="/createusergoals" element={<CreateUserGoals />} />
           </Route>
         </Routes>
       </BrowserRouter>

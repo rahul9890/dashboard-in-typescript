@@ -63,9 +63,9 @@ const Navbar: React.FC = () => {
                   <Link
                     className="btn btn-primary mx-1"
                     aria-current="page"
-                    to={"/creategoals"}
+                    to={"/createusergoals"}
                   >
-                    CreateGoals
+                    CreateUserGoals
                   </Link>
                 </li>
                 <li className="nav-item flex-grow-1 border border-dark border-2 bg-danger">
