@@ -19,12 +19,20 @@ const CreateUserGoals: React.FC = () => {
     dueDate: today,
   });
 
+  const handleCreateGoals = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log(createGoalsForm);
+  };
+
   return (
-    <div className="d-flex justify-content-center align-items-center " >
-      <div className="card shadow-lg p-4" style={{ width: "50rem", padding: "1rem"  }}>
+    <div className="d-flex justify-content-center align-items-center ">
+      <div
+        className="card shadow-lg p-4"
+        style={{ width: "50rem", padding: "1rem" }}
+      >
         <div>
           <h3 className="card-body text-center">Create Goal</h3>
-          <form>
+          <form onSubmit={handleCreateGoals}>
             <label className="form-label fw-semibold ">Goal Title</label>
             <input
               type="text"
@@ -145,7 +153,9 @@ const CreateUserGoals: React.FC = () => {
               }
             />
             <div className="d-flex justify-content-end">
-              <button className="btn btn-primary m-2">Create Goal</button>
+              <button className="btn btn-primary m-2" type="submit">
+                Create Goal
+              </button>
             </div>
           </form>
         </div>
