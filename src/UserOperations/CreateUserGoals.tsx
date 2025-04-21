@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react"; import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface CreateGoals {
   goalTitle: string;
@@ -10,7 +12,8 @@ interface CreateGoals {
 
 const CreateUserGoals: React.FC = () => {
   const today = new Date().toISOString().split("T")[0];
-
+  const baseURL = "http://localhost:8080/user/goals";
+  const [showToast, setShowToast] = useState<boolean>(false);
   const [createGoalsForm, setCreateGoalsForm] = useState<CreateGoals>({
     goalTitle: "",
     goalType: "",
@@ -19,12 +22,36 @@ const CreateUserGoals: React.FC = () => {
     dueDate: today,
   });
 
+  useEffect(() => {
+    if (showToast) {
+      toast.success("Goal Created!");
+      setShowToast(false); // Reset so it doesn't trigger repeatedly
+    }
+  }, [showToast]);
+
   const handleCreateGoals = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(createGoalsForm);
+    try {
+        console.log(createGoalsForm)
+      const responseData = await axios.put(baseURL, createGoalsForm, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      if (responseData.status === 201) {
+        setShowToast(true);
+
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+
+
   };
 
   return (
+    <>
     <div className="d-flex justify-content-center align-items-center ">
       <div
         className="card shadow-lg p-4"
@@ -59,10 +86,10 @@ const CreateUserGoals: React.FC = () => {
               }}
             >
               <option value="">Select Goal Type</option>
-              <option value="personal">Personal</option>
-              <option value="corporate">Corporate</option>
-              <option value="skills">Skills</option>
-              <option value="family">Family</option>
+              <option value="Personal">Personal</option>
+              <option value="Corporate">Corporate</option>
+              <option value="Skills">Skills</option>
+              <option value="Family">Family</option>
             </select>
             <label className="form-label fw-semibold mt-3">
               Goal Description
@@ -160,7 +187,7 @@ const CreateUserGoals: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
+    </div> <ToastContainer/></>
   );
 };
 
