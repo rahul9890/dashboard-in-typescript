@@ -19,17 +19,15 @@ useEffect(() => {
 
 
 
-    let loggedIn = useSelector((state: any) => state.auth.loggedInUserEmail)
-    if (!loggedIn) {
-        loggedIn = sessionStorage.getItem("loggedInUserEmail");
-    }
+    let loggedInUser = useSelector((state: any) => state.auth.loggedInUser)
+    
 
   return (
     <>
       <div>
         <h2 className="m-3 text-center">Login Successful</h2>
         <div className="text-center">
-          <span className="fw-bold">Welcome !</span> {loggedIn}
+          <span className="fw-bold">Welcome !</span> {loggedInUser.userName}
         </div>
       </div>
       <ToastContainer/>

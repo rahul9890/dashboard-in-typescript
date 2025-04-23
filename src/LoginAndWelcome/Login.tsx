@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     try {
-      const isUserAuthenticate = await axios.post(
+      const currentLoggedUser = await axios.post(
         baseUserURL + "/authentication",
         loggedInUser,
         {
@@ -35,8 +35,8 @@ const Login: React.FC = () => {
           },
         }
       );
-      if (isUserAuthenticate.data) {
-        dispatch(loggedIn(loggedInUser.email));
+      if (currentLoggedUser.data.userId) {
+        dispatch(loggedIn(currentLoggedUser.data));
         navigate("/dashboard",{state:{toastMessage: "Logged In successfully"}});
       } else {
         setShowModal(true);

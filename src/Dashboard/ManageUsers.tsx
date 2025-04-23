@@ -23,9 +23,10 @@ const ManageUsers: React.FC = () => {
   const [showToast, setShowToast] = useState<boolean>(false);
   const location = useLocation();
 
-  let loggedIn = useSelector((state: any) => state.auth.loggedInUserEmail);
-  if (!loggedIn) {
-    loggedIn = sessionStorage.getItem("loggedInUserEmail");
+  let loggedInUser = useSelector((state: any) => state.auth.loggedInUser);
+  let loggedInUserEmail;
+  if (loggedInUser) {
+    loggedInUserEmail = loggedInUser.userEmail;
   }
 useEffect(() => {
   if (location.state?.toastMessage) {
@@ -125,7 +126,7 @@ useEffect(() => {
                           setUserEmailForDelete(item.userEmail);
                           setShowModal(true);
                         }}
-                        disabled={item.userEmail === loggedIn}
+                        disabled={item.userEmail === loggedInUserEmail}
                       >
                         Delete
                       </button>

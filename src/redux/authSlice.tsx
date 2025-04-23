@@ -1,12 +1,27 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+
+interface LoggedInUser {
+  userId: string;
+  email: string;
+  userName: string;
+}
+
+interface AuthState {
+  loggedInUser: LoggedInUser | null;
+}
+
+const initialState: AuthState = {
+  loggedInUser: JSON.parse(sessionStorage.getItem("loggedInUser") || "null"),
+};
+
 const authSlice = createSlice({
   name: "auth",
-  initialState: { loggedInUserEmail: null },
+  initialState,
   reducers: {
-    loggedIn: (state, action: PayloadAction<string>) => {
-      state.loggedInUserEmail = action.payload;
-      sessionStorage.setItem("loggedInUserEmail", action.payload); //session storage will clear all on tab close
+    loggedIn: (state, action: PayloadAction<LoggedInUser>) => {
+      state.loggedInUser = action.payload;
+      sessionStorage.setItem("loggedInUser", JSON.stringify(action.payload));
     },
   },
 });
