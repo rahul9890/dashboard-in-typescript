@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"; import { ToastContainer, toa
 import "react-toastify/dist/ReactToastify.css";
 
 interface CreateGoals {
+  userId: string
   goalTitle: string;
   goalType: string;
   goalDescription: string;
@@ -14,7 +15,9 @@ const CreateUserGoals: React.FC = () => {
   const today = new Date().toISOString().split("T")[0];
   const baseURL = "http://localhost:8080/user/goals";
   const [showToast, setShowToast] = useState<boolean>(false);
+  
   const [createGoalsForm, setCreateGoalsForm] = useState<CreateGoals>({
+    userId: JSON.parse(sessionStorage.getItem("loggedInUser")).userId || "",
     goalTitle: "",
     goalType: "",
     goalDescription: "",
