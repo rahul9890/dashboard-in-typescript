@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"; import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GetUserGoals from "./GetUserGoals";
 
 interface CreateGoals {
   userId: string
@@ -33,7 +34,7 @@ const CreateUserGoals: React.FC = () => {
   }, [showToast]);
 
   const handleCreateGoals = async (e: React.FormEvent) => {
-    e.preventDefault();
+   
     try {
         console.log(createGoalsForm)
       const responseData = await axios.put(baseURL, createGoalsForm, {
@@ -190,7 +191,7 @@ const CreateUserGoals: React.FC = () => {
           </form>
         </div>
       </div>
-    </div> <ToastContainer/></>
+    </div> <GetUserGoals/> <ToastContainer/></>
   );
 };
 
